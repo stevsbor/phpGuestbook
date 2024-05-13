@@ -1,0 +1,20 @@
+body { font-family: Arial; font-size: 13px; color: #262626; margin: 0; border: 0; }
+#wrapper { width: 100%; max-width: 1000px; margin: 0 auto; padding: 5px 0; }
+.inside { padding: 0 5px; }
+
+#entries > .entry { padding-bottom: 20px; }
+#entries > .entry:last-child { padding-bottom: 0px; }
+#entries > .entry > .author { font-weight: bold; }
+#entries > .entry > .timestamp { font-style: oblique; }
+#entries > .entry > .message { margin-top: 5px; }
+#entries > .entry > .status { margin: 5px 0; text-transform: uppercase; }
+#entries > .entry > .status.approved { color: #63B141; }
+#entries > .entry > .status.pending { color: #ff7f11; }
+#entries > .entry > .status.declined { color: #ff1b1c; }
+
+#guestbookForm { display: block; margin: 20px 0; }
+#guestbookForm label { display: block; font-size: .75em; }
+#guestbookForm input:not([ type="submit" ]), #guestbookForm textarea { width: 100%; }
+
+#guestbookForm > .formRow { width: 100%; max-width: 350px; margin-bottom: 10px; }
+#guestbookForm > .formRow:last-child { margin-bottom: 0; }
