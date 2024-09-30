@@ -1,65 +1,27 @@
-<!DOCTYPE html>
-<html lang="de">
-	<head>
-		<meta charset="UTF-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<link rel="stylesheet" type="text/css" href="css/style.css" />
-		<title>Gästebuch</title>
-	</head>
-	<body>
-		
-		<div id="wrapper">
-			<div class="inside">
-				<h1>Gästebuch</h1>
-				<!-- Form für Neueinträge -->
-				<form action="submit.php" method="post">
-					<!--Eingabefeld für Name-->
-    				<label for="name">Name:</label>
-    				<input type="text" id="name" name="name" required><br>
-					<!--Textfeld für die Nachricht-->
-    				<label for="message">Message:</label>
-    				<textarea id="message" name="message" required></textarea><br>
-					<!--Submit button-->
-    				<input type="submit" value="Submit">
-				</form>
-				<hr>
-				<!--Container um Ergebnisse anzuzeigen-->
-				<div id="entries">
+<?php
+require_once 'config.php';
 
-					<?php
-                	// Verbindung an die lokale Datenbank
-                	$conn = new mysqli('localhost', 'root', '', 'guestbook');
-                	if ($conn->connect_error) {
-                	    die("Connection failed: " . $conn->connect_error);
-                	}
-                	//Ausgabe der Datenbankeinträge
+$conn = new mysqli($host, $username, $password, $dbname);
+if ($conn->connect_error) {
+	die("Connection failed: " . $conn->connect_error);
+}
 
-					// filter über datenbank
-                	$result = $conn->query("SELECT * FROM entries WHERE status != 'Denied' ORDER BY created_at DESC");
-                	if ($result->num_rows > 0) {
-                    	while ($row = $result->fetch_assoc()) {
-                        	$name = htmlspecialchars($row["name"]);
-                        	$message = htmlspecialchars($row["message"]);
-                        	$timestamp = date("d. F Y, H:i", strtotime($row['created_at']));
-							$status = $row['status'];
-							$statusClass = strtolower($status);
-					?>
-                        <div class='entry'>
-                        	<div class='author'><?php echo $name; ?></div>
-                        	<div class='timestamp'><?php echo $timestamp; ?></div>
-                        	<div class='message'><?php echo $message; ?></div>
-                        	<div class='status <?php echo $statusClass; ?>'><?php echo $status; ?></div>
-                        </div>
-						<hr>
-					<?php
-                    	}
-                	} else {
-                    	echo "No entries found.";
-                	}
-                	$conn->close();
-                	?>
-				</div>
-			</div>
-		</div>
-	</body>
-</html>
+$entries = [];
+$result = $conn->query("SELECT * FROM entries WHERE status != 'Denied' ORDER BY created_at DESC");
+if ($result->num_rows > 0) {
+	while ($row = $result->fetch_assoc()) {
+		$entries[] = [
+			'name' => htmlspecialchars($row["name"]),
+			'message' => htmlspecialchars($row["message"]),
+			'timestamp' => date("d. F Y, H:i", strtotime($row['created_at'])),
+			'status' => $row['status']
+		];
+	}
+}
+
+$conn->close();
+
+$title = 'Gästebuch';
+$header = 'Gästebuch';
+
+include 'index.tpl.php';

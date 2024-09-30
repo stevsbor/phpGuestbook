@@ -1,3 +1,12 @@
+<?php
+session_start();
+
+if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
+    header("Location: login.php");
+    exit;
+}
+?>
+
 <!DOCTYPE html>
 <html lang="de">
 	<head>
@@ -10,6 +19,9 @@
 		<div id="wrapper">
 			<div class="inside">
 				<h1><?= $header ?></h1>
+                <form action="logout.php" method="post">
+                    <input type="submit" value="Logout" />
+                </form>
 				<div id="entries">
                     <?php foreach ($entries as $entry): ?>
                         <div class="entry">

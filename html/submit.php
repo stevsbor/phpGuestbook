@@ -1,10 +1,12 @@
 <?php
+require 'config.php';
+
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     if (isset($_POST['name']) && isset($_POST['message']) && !empty($_POST['name']) && !empty($_POST['message'])) {
         $name = htmlspecialchars($_POST['name']);
         $message = htmlspecialchars($_POST['message']);
 
-        $conn = new mysqli('localhost', 'root', '', 'guestbook');
+        $conn = new mysqli($host, $username, $password, $dbname);
         if ($conn->connect_error) {
             die("Connection failed: " . $conn->connect_error);
         }

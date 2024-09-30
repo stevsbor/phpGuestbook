@@ -1,5 +1,8 @@
 <?php
-$conn = new mysqli('localhost', 'root', '', 'guestbook');
+// Lade Config
+require_once 'config.php';
+
+$conn = new mysqli($host, $username, $password, $dbname);
 if ($conn->connect_error) {
 	die("Connection failed: " . $conn->connect_error);
 }
@@ -50,4 +53,4 @@ $conn->close();
 $title = 'Gästebuch Admin';
 $header = 'Gästebuch Admin';
 
-include 'template.php';
+include 'admin.tpl.php';
